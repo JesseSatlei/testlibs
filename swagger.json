@@ -1,19 +1,38 @@
 {
   "openapi": "3.0.0",
+  "info": {
+    "version": "1",
+    "title": "Teste API",
+    "description": "API de teste para demonstração"
+  },
+  "servers": [
+    {
+      "url": "https://testepur.adaptable.app/"
+    }
+  ],
   "paths": {
     "/": {
       "get": {
+        "summary": "Obter mensagem de saudação",
         "operationId": "AppController_getHello",
-        "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Olá, mundo!"
+                }
+              }
+            }
           }
         }
       }
     },
     "/users": {
       "post": {
+        "summary": "Criar um novo usuário",
         "operationId": "UsersController_create",
         "parameters": [],
         "requestBody": {
@@ -28,28 +47,48 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
           }
         }
       },
       "get": {
+        "summary": "Listar todos os usuários",
         "operationId": "UsersController_findAll",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Lista de usuários recuperada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/users/{id}": {
       "get": {
+        "summary": "Obter informações de um usuário específico",
         "operationId": "UsersController_findOne",
         "parameters": [
           {
             "name": "id",
-            "required": true,
             "in": "path",
+            "description": "ID do usuário a ser obtido",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -57,17 +96,26 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Informações do usuário recuperadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
           }
         }
       },
       "patch": {
+        "summary": "Atualizar informações de um usuário",
         "operationId": "UsersController_update",
         "parameters": [
           {
             "name": "id",
-            "required": true,
             "in": "path",
+            "description": "ID do usuário a ser atualizado",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -85,17 +133,26 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Informações do usuário atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
           }
         }
       },
       "delete": {
+        "summary": "Excluir um usuário",
         "operationId": "UsersController_remove",
         "parameters": [
           {
             "name": "id",
-            "required": true,
             "in": "path",
+            "description": "ID do usuário a ser excluído",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -103,17 +160,30 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Usuário excluído com sucesso"
+          }
+        }
+      }
+    },
+    "/guide": {
+      "get": {
+        "summary": "Guia de Utilização da API",
+        "operationId": "AppController_getGuide",
+        "responses": {
+          "200": {
+            "description": "Guia de Utilização da API",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bem-vindo ao Guia de Utilização da API!\n\nPassos para utilizar a API:\n\n1. **Obter mensagem de saudação:**\n   Endpoint: `/`\n   Método: `GET`\n   Descrição: Esta rota retorna uma mensagem de saudação.\n\n2. **Criar um novo usuário:**\n   Endpoint: `/users`\n   Método: `POST`\n   Descrição: Esta rota é utilizada para criar um novo usuário. Envie um objeto JSON com os dados do usuário no corpo da requisição.\n\n3. **Listar todos os usuários:**\n   Endpoint: `/users`\n   Método: `GET`\n   Descrição: Esta rota retorna uma lista de todos os usuários cadastrados.\n\n4. **Obter informações de um usuário específico:**\n   Endpoint: `/users/{id}`\n   Método: `GET`\n   Descrição: Esta rota retorna informações de um usuário específico com base no ID fornecido.\n\n5. **Atualizar informações de um usuário:**\n   Endpoint: `/users/{id}`\n   Método: `PATCH`\n   Descrição: Esta rota é utilizada para atualizar as informações de um usuário específico. Envie um objeto JSON com os dados atualizados no corpo da requisição.\n\n6. **Excluir um usuário:**\n   Endpoint: `/users/{id}`\n   Método: `DELETE`\n   Descrição: Esta rota é utilizada para excluir um usuário específico com base no ID fornecido.\n"
+                }
+              }
+            }
           }
         }
       }
     }
-  },
-  "info": {
-    "title": "Api example",
-    "description": "The test API description",
-    "version": "1.0",
-    "contact": {}
   },
   "tags": [
     {
@@ -121,17 +191,52 @@
       "description": ""
     }
   ],
-  "servers": [],
   "components": {
     "schemas": {
       "CreateUserDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Fulano"
+          }
+        },
+        "required": ["name"]
       },
       "UpdateUserDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Fulano"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Fulano"
+          }
+        }
       }
     }
-  }
+  },
+  "schemes": ["https"]
 }
